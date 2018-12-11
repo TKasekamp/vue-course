@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Lists and ifs</title>
+	<!-- Put this in the HTML section in JSFiddle! -->
+	<script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+	<button @click="show = !show">Click</button>
+	<p v-if="show">You can see me!</p>
+	<p v-else>Now you dont!</p>
+	<p v-show="show">Do you also see me?</p>
+	<template v-if="show">
+		<p> Hi there</p>
+	</template>
+	<ul>
+		<li v-for="(i, index) in ingredients" :key="i">{{i}} ({{index}})</li>
+	</ul>
+	<template v-for="p in persons">
+		<h5>{{p.name}}</h5>
+	</template>
+
+	<span v-for="n in 10">{{n}}</span>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
