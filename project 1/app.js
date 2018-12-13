@@ -41,9 +41,7 @@ const turnText = (event) => {
   const verb = event.type === eventTypes.attack ? 'HITS' : 'HEALS';
   return `${event.actor} ${verb} ${otherActor(event)} FOR ${event.health}`;
 };
-// TODO
-// health bar lenght, monster end, reset, give up
-// make healths computed
+
 new Vue({
   el: '#app',
   data: {
@@ -55,7 +53,10 @@ new Vue({
   },
   methods: {
     reset: function () {
-      this.data = {...this, ...initialState};
+      Object.entries(initialState).forEach(([key, value]) => {
+        Vue.set(this, key, value)
+      });
+      this.events = []; // Vue is shit, can't do events = []
     },
     startNewGame: function () {
       this.reset();
@@ -64,13 +65,12 @@ new Vue({
     monsterAttack: function () {
       const health = generateNumber(MAXIMUM_DAMAGE);
       this.events.push({actor: actors.monster, type: eventTypes.attack, health});
-      this.monsterHealth -= health;
+      this.playerHealth -= health;
     },
     attack: function (damageSize = MAXIMUM_DAMAGE) {
-      console.log({damageSize});
       const health = generateNumber(damageSize);
       this.events.push({actor: actors.player, type: eventTypes.attack, health});
-      this.playerHealth -= health;
+      this.monsterHealth -= health;
 
       this.monsterAttack();
     },
@@ -89,6 +89,12 @@ new Vue({
       if (newHealth < 0) {
         this.playing = false;
         alert("Player lost");
+      }
+    },
+    monsterHealth: function (newHealth) {
+      if (newHealth < 0) {
+        this.playing = false;
+        alert("Monster lost");
       }
     }
   }
