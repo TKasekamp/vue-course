@@ -12,11 +12,13 @@
                 <app-list/>
             </div>
         </div>
+        <assignement10></assignement10>
     </div>
 </template>
 
 <script>
     import List from "./List.vue";
+    import Assignement10 from "./Assignement10.vue";
     import {fruitMixin} from "./fruitMixin";
 
     export default {
@@ -32,7 +34,8 @@
         },
 
         components: {
-            appList: List
+            appList: List,
+            assignement10: Assignement10
         },
         mixins: [fruitMixin]
     }
