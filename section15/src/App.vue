@@ -12,6 +12,12 @@
                     <input type="email" class="form-control" id="email" v-model="user.email">
                 </div>
                 <button class="btn btn-primary" @click="submit">Submit</button>
+                <hr>
+                <button class="btn btn-primary" @click="fetchData">Fetch data</button>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="u in users">{{u.username}} - {{ u.email}}</li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -21,21 +27,38 @@
     const URL = 'https://vuejs-http-21898.firebaseio.com/node.json';
     export default {
         data() {
-            return{
+            return {
                 user: {
                     username: '',
                     email: ''
-                }
+                },
+                users: [],
+                resource: {}
             }
         },
         methods: {
             submit() {
                 console.log(this.user)
-                this.$http.post(URL, this.user).then(
-                    response => console.log(response),
-                    error => console.error(error)
-                )
+                // this.$http.post('data.json', this.user)
+                //     .then(
+                //         response => console.log(response),
+                //         error => console.error(error)
+                //     )
+                this.resource.save({}, this.user)
+            },
+            fetchData() {
+                this.$http.get('data.json')
+                    .then(
+                        response => response.json(),
+                        error => console.error(error)
+                    )
+                    .then(
+                        data => this.users = Object.keys(data).map(key => data[key])
+                    )
             }
+        },
+        created() {
+            this.resource = this.$resource('data.json')
         }
     }
 </script>
